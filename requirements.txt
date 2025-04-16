@@ -1,4 +1,6 @@
 flask
 python-dotenv
 azure-storage-blob
-httpie
+pre-commit
+flake8
+flask-cors
