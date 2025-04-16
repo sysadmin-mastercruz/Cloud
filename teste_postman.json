@@ -1,0 +1,107 @@
+{
+    "info": {
+        "name": "projeto5-Api - Cole\u00e7\u00e3o Final",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://127.0.0.1:5000"
+        }
+    ],
+    "item": [
+        {
+            "name": "GET /",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        ""
+                    ]
+                }
+            }
+        },
+        {
+            "name": "GET /api/produtos",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/api/produtos",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "api",
+                        "produtos"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "GET /api/supermercados",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/api/supermercados",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "api",
+                        "supermercados"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "POST /api/encomendas",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"supermercado\": \"Continente\",\n    \"produtos\": [\n        {\n            \"nome\": \"banana\",\n            \"quantidade\": 2\n        },\n        {\n            \"nome\": \"ma\\u00e7\\u00e3\",\n            \"quantidade\": 1\n        }\n    ]\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/api/encomendas",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "api",
+                        "encomendas"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "GET /api/impacto",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/api/impacto",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "api",
+                        "impacto"
+                    ]
+                }
+            }
+        }
+    ]
+}

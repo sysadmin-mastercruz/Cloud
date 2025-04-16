@@ -1,0 +1,4 @@
+flask
+python-dotenv
+azure-storage-blob
+httpie

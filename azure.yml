@@ -1,0 +1,10 @@
+name: api-azure-container
+services:
+  web:
+    project: .
+    dockerfilePath: Dockerfile
+    language: python
+    host: appservice
+    configuration:
+      appCommandLine: "python run.py"
+      port: 5000
