@@ -157,7 +157,7 @@ A pipeline utiliza um ficheiro YAML (por exemplo: `azure-pipelines.yml`) que def
 ```bash
 docker images
 docker ps -a
-docker run -d --name api-projeto-test -p 5000:5000 meuacrprojeto/api-projeto:v1
+docker run -d --name api-projeto-test meuacrprojeto/api-projeto:v1
 ```
 
 
@@ -180,6 +180,19 @@ Ao usar um agente *self-hosted*, é necessário:
 - Criar o Agent Pool
 - Associá-lo à pipeline
 
+```bash
+mkdir myagent && cd myagent  #criar diretório para o agent
+
+curl -O https://vstsagentpackage.azureedge.net/agent/4.254.0/vsts-agent-linux-x64-4.254.0.tar.gz  # download dos ficheiros para instalar o agent
+
+tar zxvf vsts-agent-linux-x64-4.254.0.tar.gz # desencriptar os ficheiros
+
+./config.sh  # script de configuração da pool e nome do agente
+
+./run.py  # script que coloca o agente em execução
+```
+
+
 ---
 
 ## ⏱️ Triggers (Opcional mas útil)
@@ -193,7 +206,7 @@ trigger:
   - main
   - pr
 ```
-
+```
 ### 📦 *Dockerfile & Docker Compose*
 
 #### **Dockerfile:**
