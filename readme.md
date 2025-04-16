@@ -66,7 +66,7 @@ api-azure/
 ### **Clonar o repositório:**
 
 ```bash
-git clone -branch https://gitlab.com/sysadmin-modulo5/projeto5.git
+git clone -branch cloud https://gitlab.com/sysadmin-modulo5/projeto5.git
 cd api-azure
 ```
 
