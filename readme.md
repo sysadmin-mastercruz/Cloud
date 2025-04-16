@@ -117,7 +117,7 @@ Este guia explica os componentes e configurações essenciais para correr uma pi
 ## 📁 Repositório de Código
 
 O ficheiro YAML da pipeline deve estar num repositório de código.  
-Neste caso, o repositório utilizado é o **GitLab**.
+Neste caso, o repositório utilizado é o **GitHub**.
 
 ---
 
@@ -197,16 +197,66 @@ tar zxvf vsts-agent-linux-x64-4.254.0.tar.gz # desencriptar os ficheiros
 
 ## ⏱️ Triggers (Opcional mas útil)
 
-Define *triggers* no ficheiro YAML para correr a pipeline automaticamente quando há alterações no repositório:
+Define *triggers* no ficheiro YAML para correr a pipeline automaticamente quando há alterações no repositório (main e pr):
 
 ### 🔁 *Triggers no ficheiro YAML*
 
 ```yaml
 trigger:
-  - main
-  - pr
+- main
+- pr
+
+pool:
+  name: selfhostedagent
+
+variables:
+  IMAGE_NAME: api-projeto
+  IMAGE_TAG: v1
+  REGISTRY_NAME: meuacrprojeto
+  DOCKERFILE_PATH: Dockerfile
+  variables:
+  AZURE_STORAGE_CONNECTION_STRING: 'DefaultEndpointsProtocol=https;AccountName=meuarmazenamento;AccountKey=XXXXX;EndpointSuffix=core.windows.net'
+
+
+steps:
+- script: |
+    echo "Versão do Python:"
+    python3 --version
+
+    echo "Instalar dependências e ferramentas..."
+    python3 -m pip install --upgrade pip
+    pip install -r requirements.txt
+    pip install flake8
+    pip install pytest
+  displayName: 'Instalar dependências, flake8 e pytest'
+
+- script: |
+    echo "Testar estilo de código com flake8..."
+    flake8 app/
+  displayName: 'Testar linting com flake8 (pode falhar mas continua)'
+  continueOnError: true
+
+- script: |
+    echo "Executar testes funcionais simulados com mock..."
+    python3 teste_endpoints.py
+  displayName: 'Testes funcionais simulados com servidor mockado'
+
+- script: |
+    echo "Executar testes unitários com pytest..."
+    pytest || echo "Sem testes pytest definidos."
+  displayName: 'Testes unitários com pytest'
+  continueOnError: true
+
+- task: Docker@2
+  displayName: 'Construir imagem Docker'
+  inputs:
+    command: build
+    repository: $(REGISTRY_NAME)/$(IMAGE_NAME)
+    dockerfile: $(DOCKERFILE_PATH)
+    tags: $(IMAGE_TAG)
+
 ```
-```
+
 ### 📦 *Dockerfile & Docker Compose*
 
 #### **Dockerfile:**
