@@ -152,6 +152,15 @@ A pipeline utiliza um ficheiro YAML (por exemplo: `azure-pipelines.yml`) que def
 - Testes unitários com `pytest`
 - Construção da imagem Docker
 
+
+## Executar a imagem Docker criada através da pipeline
+```bash
+docker images
+docker ps -a
+docker run -d --name api-projeto-test -p 5000:5000 meuacrprojeto/api-projeto:v1
+```
+
+
 ---
 
 ## 👷 Agente de Build (Agent)
