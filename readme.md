@@ -142,7 +142,7 @@ A conta que configura a pipeline precisa de:
 
 ---
 
-## 🛠️ Pipeline Criada
+### 🛠️ Pipeline Criada
 
 A pipeline utiliza um ficheiro YAML (por exemplo: `azure-pipelines.yml`) que define os passos a executar automaticamente:
 
@@ -153,53 +153,6 @@ A pipeline utiliza um ficheiro YAML (por exemplo: `azure-pipelines.yml`) que def
 - Construção da imagem Docker
 
 
-## Executar a imagem Docker criada através da pipeline
-```bash
-docker images
-docker ps -a
-docker run -d --name api-projeto-test meuacrprojeto/api-projeto:v1
-```
-
-
----
-
-## 👷 Agente de Build (Agent)
-
-A pipeline precisa de um agente para correr os jobs definidos:
-
-- **Self-hosted agent**: Instalado e configurado manualmente (ex: `selfhostedagent`)
-  - Corre numa VM sob controlo total do utilizador
-
----
-
-## 🧰 Agent Pool
-
-A pipeline deve estar associada a um **Agent Pool**.  
-Ao usar um agente *self-hosted*, é necessário:
-
-- Criar o Agent Pool
-- Associá-lo à pipeline
-
-```bash
-mkdir myagent && cd myagent  #criar diretório para o agent
-
-curl -O https://vstsagentpackage.azureedge.net/agent/4.254.0/vsts-agent-linux-x64-4.254.0.tar.gz  # download dos ficheiros para instalar o agent
-
-tar zxvf vsts-agent-linux-x64-4.254.0.tar.gz # desencriptar os ficheiros
-
-./config.sh  # script de configuração da pool e nome do agente
-
-./run.py  # script que coloca o agente em execução
-```
-
-
----
-
-## ⏱️ Triggers (Opcional mas útil)
-
-Define *triggers* no ficheiro YAML para correr a pipeline automaticamente quando há alterações no repositório (main e pr):
-
-### 🔁 *Triggers no ficheiro YAML*
 
 ```yaml
 trigger:
@@ -257,6 +210,49 @@ steps:
 
 ```
 
+### Executar a imagem Docker criada através da pipeline
+```bash
+docker images
+docker ps -a
+docker run -d --name api-projeto-test meuacrprojeto/api-projeto:v1
+```
+
+
+---
+
+### 👷 Agente de Build (Agent)
+
+A pipeline precisa de um agente para correr os jobs definidos:
+
+- **Self-hosted agent**: Instalado e configurado manualmente (ex: `selfhostedagent`)
+  - Corre numa VM sob controlo total do utilizador
+
+---
+
+### 🧰 Agent Pool
+
+A pipeline deve estar associada a um **Agent Pool**.  
+Ao usar um agente *self-hosted*, é necessário:
+
+- Criar o Agent Pool
+- Associá-lo à pipeline
+
+```bash
+mkdir myagent && cd myagent  #criar diretório para o agent
+
+curl -O https://vstsagentpackage.azureedge.net/agent/4.254.0/vsts-agent-linux-x64-4.254.0.tar.gz  # download dos ficheiros para instalar o agent
+
+tar zxvf vsts-agent-linux-x64-4.254.0.tar.gz # desencriptar os ficheiros
+
+./config.sh  # script de configuração da pool e nome do agente
+
+./run.py  # script que coloca o agente em execução
+```
+
+
+---
+
+
 ### 📦 *Dockerfile & Docker Compose*
 
 #### **Dockerfile:**
@@ -281,7 +277,7 @@ docker run -p 5000:5000 api-azure
 
 ---
 
-### **Levantar com Docker Compose:**
+#### **Levantar com Docker Compose:**
 
 ```bash
 docker-compose up --build
@@ -294,8 +290,14 @@ docker-compose up --build
 
 ---
 
+#### **Deploy do Container para o Azure Container Instance:**
 
-## 📘 **Documentação Swagger** (OpenAPI)
+```bash
+sudo ./deploy_aci.sh  #  deploy do container para o Azure Container Instance
+```
+
+
+### 🚀 **Documentação Swagger** (OpenAPI)
 
 A documentação da API está no ficheiro `swagger.yml`, com:
 
@@ -306,7 +308,7 @@ A documentação da API está no ficheiro `swagger.yml`, com:
 
 ---
 
-## 📌 **Notas Finais:**
+### 📌 **Notas Finais:**
 
 - A API é modular e extensível
 - Os dados de impacto ambiental são realistas e simulados
@@ -321,7 +323,7 @@ A documentação da API está no ficheiro `swagger.yml`, com:
 
 ---
 
-## ✍️ **Autores**
+### ✍️ **Autores**
 
 - Ricardo Cruz
 - Rodrigo Almeida
