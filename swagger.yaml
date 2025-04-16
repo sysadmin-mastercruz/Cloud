@@ -1,0 +1,192 @@
+openapi: 3.0.3
+info:
+  title: API de Encomendas Sustentáveis
+  description: API para avaliar o impacto ambiental de encomendas (com frutas e supermercados reais).
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:5000
+    description: Servidor local de desenvolvimento
+
+paths:
+  /produtos:
+    get:
+      summary: Lista todas as frutas disponíveis
+      responses:
+        '200':
+          description: Lista de frutas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Produto'
+              example:
+                success: true
+                data:
+                  - nome: "Banana"
+                    pais_origem: "Brasil"
+                    transporte: "avião"
+                    distancia: 7000
+                    combustivel_por_km: 1.2
+                    emissao_co2_por_km: 1.1
+                    impacto:
+                      consumo_agua_unidade: 9.3
+                      emissao_co2: 0.06
+
+  /supermercados:
+    get:
+      summary: Lista todos os supermercados disponíveis
+      responses:
+        '200':
+          description: Lista de supermercados
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Supermercado'
+              example:
+                success: true
+                data:
+                  - nome: "Pingo Doce"
+                    combustivel: 0.3
+                    distancia: 5.0
+                    emissao_co2: 50
+                  - nome: "Continente"
+                    combustivel: 0.4
+                    distancia: 10.0
+                    emissao_co2: 30
+
+  /encomendas:
+    post:
+      summary: Cria uma nova encomenda
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Encomenda'
+      responses:
+        '201':
+          description: Encomenda criada com sucesso
+          content:
+            application/json:
+              example:
+                message: "Encomenda criada com sucesso"
+                encomenda_id: 101
+
+  /impactos:
+    get:
+      summary: Calcula o impacto ambiental de uma encomenda
+      parameters:
+        - in: query
+          name: encomenda_id
+          schema:
+            type: integer
+          required: true
+          description: ID da encomenda para calcular o impacto
+      responses:
+        '200':
+          description: Impacto calculado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Impacto'
+              example:
+                encomenda_id: 101
+                impacto_total: 3.7
+                detalhes: "Baseado em produtos: Banana, Maçã; Supermercado: Lidl"
+        '404':
+          description: Encomenda não encontrada
+          content:
+            application/json:
+              example:
+                error: "Encomenda com ID 101 não encontrada"
+
+components:
+  schemas:
+    Produto:
+      type: object
+      properties:
+        nome:
+          type: string
+        pais_origem:
+          type: string
+        transporte:
+          type: string
+        distancia:
+          type: number
+        combustivel_por_km:
+          type: number
+        emissao_co2_por_km:
+          type: number
+        impacto:
+          type: object
+          properties:
+            consumo_agua_unidade:
+              type: number
+            emissao_co2:
+              type: number
+      required:
+        - nome
+        - pais_origem
+        - transporte
+        - distancia
+        - combustivel_por_km
+        - emissao_co2_por_km
+        - impacto
+
+    Supermercado:
+      type: object
+      properties:
+        nome:
+          type: string
+        combustivel:
+          type: number
+        distancia:
+          type: number
+        emissao_co2:
+          type: number
+      required:
+        - nome
+        - combustivel
+        - distancia
+        - emissao_co2
+
+    Encomenda:
+      type: object
+      properties:
+        cliente:
+          type: string
+        produtos:
+          type: array
+          items:
+            type: integer
+        supermercado_id:
+          type: integer
+      required:
+        - cliente
+        - produtos
+        - supermercado_id
+
+    Impacto:
+      type: object
+      properties:
+        encomenda_id:
+          type: integer
+        impacto_total:
+          type: number
+          format: float
+        detalhes:
+          type: string
