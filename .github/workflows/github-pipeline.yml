@@ -1,28 +1,37 @@
-name: Testes com Pytest
+name: GitHub Actions - Deploy e Build
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches:
+      - main  # ou a branch que usas para os teus deploys
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Clonar o repositório
-        uses: actions/checkout@v3
+      # Passo 1: Checkout do código
+      - name: Fazer checkout do código
+        uses: actions/checkout@v2
 
-      - name: Instalar Python
-        uses: actions/setup-python@v4
+      # Passo 2: Configuração do Python
+      - name: Configurar Python
+        uses: actions/setup-python@v2
         with:
-          python-version: '3.10'
+          python-version: 3.10  # usa a versão de Python que precisas
 
+      # Passo 3: Instalar dependências
       - name: Instalar dependências
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Correr testes com pytest
-        run: pytest
+      # Passo 4: Construção do ambiente ou execução da aplicação
+      - name: Executar a aplicação
+        run: |
+          python run.py  # Ou o comando que inicie a tua aplicação
+
+      # Passo 5: Verificar se a aplicação correu (poderia ser outro tipo de verificação)
+      - name: Verificar status da aplicação
+        run: |
+          curl --silent --fail http://127.0.0.1:5000 || exit 1  # Verificar se a aplicação responde
