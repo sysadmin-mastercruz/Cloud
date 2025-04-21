@@ -11,26 +11,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Fazer checkout do código
-      uses: actions/checkout@v4
+      - name: Fazer checkout do código
+        uses: actions/checkout@v4
 
-    - name: Configurar Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
 
-    - name: Instalar dependências
-      run: |
-        python -m venv venv
-        source venv/bin/activate
-        pip install -r requirements.txt
+      - name: Instalar dependências
+        run: |
+          python -m venv venv
+          ./venv/bin/pip install --upgrade pip
+          ./venv/bin/pip install -r requirements.txt
+          ./venv/bin/pip install flake8 pytest  # já instala tudo o que vai usar nos testes
 
-    - name: Executar a aplicação (background e teste)
-      run: |
-        source venv/bin/activate
-        python run.py &  # Inicia a aplicação em segundo plano
-        sleep 5  # Aguarda 5 segundos para garantir que o servidor tenha iniciado
-        curl --fail http://127.0.0.1:5000  # Verifica se o servidor está a funcionar
+      - name: Iniciar aplicação em segundo plano e verificar
+        run: |
+          nohup ./venv/bin/python run.py &
+          sleep 5
+          curl --fail http://127.0.0.1:5000
 
     - name: Executar testes lint (flake8)
       run: |
@@ -44,3 +44,8 @@ jobs:
         source venv/bin/activate
         pip install pytest  
         pytest  
+      - name: Executar testes lint (flake8)
+        run: ./venv/bin/flake8 .
+
+      - name: Executar testes (pytest)
+        run: ./venv/bin/pytest
