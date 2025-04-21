@@ -27,4 +27,7 @@ jobs:
 
     - name: Executar a aplicação (background e teste)
       run: |
-        source venv/bin
+        source venv/bin/activate
+        python run.py &
+        sleep 5
+        curl --fail http://127.0.0.1:5000
