@@ -28,6 +28,18 @@ jobs:
     - name: Executar a aplicação (background e teste)
       run: |
         source venv/bin/activate
-        python run.py &
-        sleep 5
-        curl --fail http://127.0.0.1:5000
+        python run.py &  # Inicia a aplicação em segundo plano
+        sleep 5  # Aguarda 5 segundos para garantir que o servidor tenha iniciado
+        curl --fail http://127.0.0.1:5000  # Verifica se o servidor está a funcionar
+
+    - name: Executar testes lint (flake8)
+      run: |
+        source venv/bin/activate
+        pip install flake8  # Instala o flake8, se necessário
+        flake8 .  # Executa o flake8 na pasta atual
+
+    - name: Testar a aplicação (pytest ou outros testes)
+      run: |
+        source venv/bin/activate
+        pip install pytest  # Instala pytest, se necessário
+        pytest  # Executa os testes com pytest (ajusta conforme necessário)
