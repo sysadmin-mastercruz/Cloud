@@ -73,11 +73,3 @@ def test_impacto():
         r = requests.get(f"{BASE_URL}/api/impacto")
         print(f"Status: {r.status_code}")
         print("Resposta:", r.json(), "\n")
-
-
-if __name__ == "__main__":
-    test_home()
-    test_produtos()
-    test_supermercados()
-    test_post_encomenda()
-    test_impacto()
