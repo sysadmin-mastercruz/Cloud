@@ -4,18 +4,17 @@ from unittest.mock import patch
 BASE_URL = "http://127.0.0.1:5000"
 
 def test_home():
-    print("GET /")
     with patch('requests.get') as mock_get:
         mock_get.return_value.status_code = 200
         mock_get.return_value.json.return_value = {"message": "API em execução"}
         
         r = requests.get(f"{BASE_URL}/")
-        print(f"Status: {r.status_code}\n")
-        print("Resposta:", r.json(), "\n")
+        
+        assert r.status_code == 200
+        assert r.json() == {"message": "API em execução"}
 
 
 def test_produtos():
-    print("GET /api/produtos")
     with patch('requests.get') as mock_get:
         mock_get.return_value.status_code = 200
         mock_get.return_value.json.return_value = [
@@ -24,12 +23,15 @@ def test_produtos():
         ]
         
         r = requests.get(f"{BASE_URL}/api/produtos")
-        print(f"Status: {r.status_code}")
-        print("Resposta:", r.json(), "\n")
+        
+        assert r.status_code == 200
+        assert r.json() == [
+            {"nome": "banana", "preco": 1.2},
+            {"nome": "maçã", "preco": 2.3}
+        ]
 
 
 def test_supermercados():
-    print("GET /api/supermercados")
     with patch('requests.get') as mock_get:
         mock_get.return_value.status_code = 200
         mock_get.return_value.json.return_value = [
@@ -38,12 +40,15 @@ def test_supermercados():
         ]
         
         r = requests.get(f"{BASE_URL}/api/supermercados")
-        print(f"Status: {r.status_code}")
-        print("Resposta:", r.json(), "\n")
+        
+        assert r.status_code == 200
+        assert r.json() == [
+            {"nome": "Pingo Doce", "localizacao": "Lisboa"},
+            {"nome": "Continente", "localizacao": "Porto"}
+        ]
 
 
 def test_post_encomenda():
-    print("POST /api/encomendas")
     payload = {
         "supermercado": "Continente",
         "produtos": [
@@ -57,19 +62,17 @@ def test_post_encomenda():
         mock_post.return_value.json.return_value = {"status": "Encomenda criada com sucesso"}
         
         r = requests.post(f"{BASE_URL}/api/encomendas", json=payload)
-        print(f"Status: {r.status_code}")
-        try:
-            print("Resposta:", r.json(), "\n")
-        except Exception:
-            print("Resposta não é JSON:", r.text, "\n")
+        
+        assert r.status_code == 201
+        assert r.json() == {"status": "Encomenda criada com sucesso"}
 
 
 def test_impacto():
-    print("GET /api/impacto")
     with patch('requests.get') as mock_get:
         mock_get.return_value.status_code = 200
         mock_get.return_value.json.return_value = {"impacto": "baixo"}
         
         r = requests.get(f"{BASE_URL}/api/impacto")
-        print(f"Status: {r.status_code}")
-        print("Resposta:", r.json(), "\n")
+        
+        assert r.status_code == 200
+        assert r.json() == {"impacto": "baixo"}
