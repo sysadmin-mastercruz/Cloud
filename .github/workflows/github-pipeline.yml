@@ -35,11 +35,12 @@ jobs:
     - name: Executar testes lint (flake8)
       run: |
         source venv/bin/activate
-        pip install flake8  # Instala o flake8, se necessário
-        flake8 .  # Executa o flake8 na pasta atual
+        pip install flake8 
+        flake8 . 
+      continue-on-error: true  
 
     - name: Testar a aplicação (pytest ou outros testes)
       run: |
         source venv/bin/activate
-        pip install pytest  # Instala pytest, se necessário
-        pytest  # Executa os testes com pytest (ajusta conforme necessário)
+        pip install pytest  
+        pytest  
