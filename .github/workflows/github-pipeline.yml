@@ -24,7 +24,7 @@ jobs:
           python -m venv venv
           ./venv/bin/pip install --upgrade pip
           ./venv/bin/pip install -r requirements.txt
-          ./venv/bin/pip install flake8 pytest  # já instala tudo o que vai usar nos testes
+          ./venv/bin/pip install flake8 pytest
 
       - name: Iniciar aplicação em segundo plano e verificar
         run: |
@@ -32,20 +32,10 @@ jobs:
           sleep 5
           curl --fail http://127.0.0.1:5000
 
-    - name: Executar testes lint (flake8)
-      run: |
-        source venv/bin/activate
-        pip install flake8 
-        flake8 . 
-      continue-on-error: true  
-
-    - name: Testar a aplicação (pytest ou outros testes)
-      run: |
-        source venv/bin/activate
-        pip install pytest  
-        pytest  
       - name: Executar testes lint (flake8)
         run: ./venv/bin/flake8 .
+        continue-on-error: true  # Permite que falhas de lint não quebrem a pipeline
 
       - name: Executar testes (pytest)
         run: ./venv/bin/pytest
+
