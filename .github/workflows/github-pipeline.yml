@@ -4,7 +4,7 @@ on:
   push:
     branches: [ LinhadeCano ] 
   pull_request:
-    branches: [ main ] 
+    branches: [ LinhadeCano ] 
 
 jobs:
   build:
