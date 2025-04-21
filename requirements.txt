@@ -4,3 +4,4 @@ azure-storage-blob
 pre-commit
 flake8
 flask-cors
+pytest
