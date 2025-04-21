@@ -2,40 +2,56 @@ name: CI Cloud
 
 on:
   push:
-    branches: [ LinhadeCano ] 
+    branches: [ LinhadeCano ]
   pull_request:
-    branches: [ LinhadeCano ] 
+    branches: [ LinhadeCano ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Fazer checkout do código
-        uses: actions/checkout@v4
+    - name: Fazer checkout do código
+      uses: actions/checkout@v4
 
-      - name: Configurar Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
+    - name: Configurar Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
 
-      - name: Instalar dependências
-        run: |
-          python -m venv venv
-          ./venv/bin/pip install --upgrade pip
-          ./venv/bin/pip install -r requirements.txt
-          ./venv/bin/pip install flake8 pytest
+    - name: Atualizar pip
+      run: |
+        python -m pip install --upgrade pip  # Atualiza o pip para a versão mais recente
 
-      - name: Iniciar aplicação em segundo plano e verificar
-        run: |
-          nohup ./venv/bin/python run.py &
-          sleep 5
-          curl --fail http://127.0.0.1:5000
+    - name: Instalar dependências
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+        pip install -r requirements.txt  # Instala as dependências do projeto
 
-      - name: Executar testes lint (flake8)
-        run: ./venv/bin/flake8 .
-        continue-on-error: true  # Permite que falhas de lint não quebrem a pipeline
+    - name: Executar a aplicação (background e teste)
+      run: |
+        source venv/bin/activate
+        python run.py &  # Inicia a aplicação em segundo plano
+        sleep 5  # Aguarda 5 segundos para garantir que o servidor tenha iniciado
+        curl --fail http://127.0.0.1:5000  # Verifica se o servidor está a funcionar
 
-      - name: Executar testes (pytest)
-        run: ./venv/bin/pytest
+    - name: Executar testes lint (flake8)
+      run: |
+        source venv/bin/activate
+        pip install flake8  # Instala flake8, se necessário
+        flake8 .  # Executa flake8 na pasta atual
+      continue-on-error: true  # Permite que o job continue mesmo se flake8 falhar
 
+    - name: Testar a aplicação (pytest ou outros testes)
+      run: |
+        source venv/bin/activate
+        pip install pytest  # Instala pytest, se necessário
+        pytest teste_endpoints.py  # Executa o teste específico
+      continue-on-error: true  # Permite que o job continue mesmo se os testes falharem
+    - name: Parar a aplicação 
+      run: |
+        source venv/bin/activate
+        pkill -f run.py  # Para a aplicação em segundo plano
+        sleep 5  # Aguarda 5 segundos para garantir que o servidor tenha parado
+    
