@@ -54,23 +54,4 @@ jobs:
         source venv/bin/activate
         pkill -f run.py  # Para a aplicação em segundo plano
         sleep 5  # Aguarda 5 segundos para garantir que o servidor tenha parado
-    - name: Enviar notificação para o Slack
-      if: failure()  # Envia notificação apenas se o job falhar
-      uses: slackapi/slack-github-action@v1.22.0
-      with:
-        payload: |
-          {
-            "text": "O job falhou! Verifique os logs para mais detalhes.",
-            "channel": "#seu-canal",
-            "username": "GitHub Actions",
-            "icon_emoji": ":warning:"
-          }
-        slack-token: ${{ secrets.SLACK_TOKEN }}  # Token do Slack armazenado como segredo
-        channel: "#seu-canal"  # Canal do Slack onde a notificação será enviada
-        username: "GitHub Actions"  # Nome do usuário que enviará a notificação
-        icon_emoji: ":warning:"  # Emoji que será usado como ícone da notificação
-        text: "O job falhou! Verifique os logs para mais detalhes."  # Mensagem da notificação
-        attachments: '[{"text": "Verifique os logs para mais detalhes."}]'  # Anexos da notificação
-        color: "danger"  # Cor da notificação (vermelho para erro)
-        fallback: "O job falhou! Verifique os logs para mais detalhes."  # Mensagem de fallback para clientes que não suportam anexos
-        mrkdwn: true  # Permite o uso de Markdown na mensagem
+    
