@@ -329,3 +329,4 @@ A documentação da API está no ficheiro `swagger.yml`, com:
 - Rui Maciel
 
 
+Alteração de teste para acionar o pipeline
