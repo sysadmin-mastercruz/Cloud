@@ -2,9 +2,9 @@ name: CI Cloud
 
 on:
   push:
-    branches: [ main ]
+    branches: [ LinhadeCano ] 
   pull_request:
-    branches: [ main ]
+    branches: [ main ] 
 
 jobs:
   build:
