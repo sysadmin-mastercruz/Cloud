@@ -52,6 +52,6 @@ jobs:
     - name: Parar a aplicação 
       run: |
         source venv/bin/activate
-        pkill -f run.py  # Para a aplicação em segundo plano
+        pkill -f run.py     # Pára a aplicação em segundo plano
         sleep 5  # Aguarda 5 segundos para garantir que o servidor tenha parado
     

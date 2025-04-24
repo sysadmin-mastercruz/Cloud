@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: projeto5-cloud-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: projeto5-cloud
+  template:
+    metadata:
+      labels:
+        app: projeto5-cloud
+    spec:
+      containers:
+        - name: projeto5-container
+          image: projeto5-cloud:latest  # Atualiza com a imagem real (ex: do DockerHub)
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000
+          env:
+            - name: AZURE_STORAGE_CONTAINER
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: AZURE_STORAGE_CONTAINER
+            - name: AZURE_STORAGE_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: AZURE_STORAGE_CONNECTION_STRING
