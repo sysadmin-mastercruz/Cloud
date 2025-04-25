@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: projeto5-cloud-deployment
 spec:
-  replicas: 2
+  replicas: 4
   selector:
     matchLabels:
       app: projeto5-cloud
