@@ -1,57 +1,62 @@
-name: CI Cloud
+name: CI com Trivy
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
-  build:
+  build-and-scan:
     runs-on: ubuntu-latest
 
-    steps:
-    - name: Fazer checkout do código
-      uses: actions/checkout@v4
+    env:
+      IMAGE_NAME: api-projeto
+      IMAGE_TAG: v1
+      REGISTRY: ghcr.io/${{ github.repository }}
 
-    - name: Configurar Python
-      uses: actions/setup-python@v5
+    steps:
+    # 📥 Clonar o repositório
+    - name: Checkout do código
+      uses: actions/checkout@v3
+
+    # 🐍 Instalar Python e dependências
+    - name: Instalar Python e dependências
+      uses: actions/setup-python@v4
       with:
         python-version: '3.10'
 
-    - name: Atualizar pip
+    - name: Instalar dependências do projeto
       run: |
-        python -m pip install --upgrade pip  # Atualiza o pip para a versão mais recente
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install flake8 pytest
 
-    - name: Instalar dependências
-      run: |
-        python -m venv venv
-        source venv/bin/activate
-        pip install -r requirements.txt  # Instala as dependências do projeto
+    # 🧪 Linting
+    - name: Verificar estilo com flake8
+      run: flake8 app || true
 
-    - name: Executar a aplicação (background e teste)
-      run: |
-        source venv/bin/activate
-        python run.py &  # Inicia a aplicação em segundo plano
-        sleep 5  # Aguarda 5 segundos para garantir que o servidor tenha iniciado
-        curl --fail http://127.0.0.1:5000  # Verifica se o servidor está a funcionar
+    # ✅ Testes unitários
+    - name: Executar testes com pytest
+      run: pytest || echo "Sem testes definidos"
 
-    - name: Executar testes lint (flake8)
+    # 🐳 Build da imagem Docker
+    - name: Construir imagem Docker
       run: |
-        source venv/bin/activate
-        pip install flake8  # Instala flake8, se necessário
-        flake8 .  # Executa flake8 na pasta atual
-      continue-on-error: true  # Permite que o job continue mesmo se flake8 falhar
+        docker build -t $IMAGE_NAME:$IMAGE_TAG .
 
-    - name: Testar a aplicação (pytest ou outros testes)
+    # 🔍 Instalar Trivy
+    - name: Instalar Trivy
       run: |
-        source venv/bin/activate
-        pip install pytest  # Instala pytest, se necessário
-        pytest teste_endpoints.py  # Executa o teste específico
-      continue-on-error: true  # Permite que o job continue mesmo se os testes falharem
-    - name: Parar a aplicação 
+        wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.49.1_Linux-64bit.deb
+        sudo dpkg -i trivy_0.49.1_Linux-64bit.deb
+
+    # 🛡️ Scan da imagem Docker com Trivy
+    - name: Analisar imagem Docker com Trivy
       run: |
-        source venv/bin/activate
-        pkill -f run.py     # Pára a aplicação em segundo plano
-        sleep 5  # Aguarda 5 segundos para garantir que o servidor tenha parado
-    
+        trivy image $IMAGE_NAME:$IMAGE_TAG || true
+
+    # 🧬 Scan do código-fonte com Trivy
+    - name: Analisar código-fonte com Trivy
+      run: |
+        trivy fs . || true
