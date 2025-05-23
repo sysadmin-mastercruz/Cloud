@@ -208,9 +208,11 @@ Após aplicação de todas as configurações:
 - A interface do Grafana fica acessível no browser através do link e permite visualizar os gráficos das métricas pretendidas relativmaente à API
 - Concluindo: a stack de observabilidade Prometheus + Grafana monitoriza a API em tempo real
 
-```bash Prometheus:
+🟢 Endereço do Prometheus
+```bash 
 http://172.211.209.38/targets
 ```
+📊 Link direto para o dashboard Grafana (grupo1)
 ```bash Grafana:
 http://132.220.61.62/d/6581e46e4e5c7ba40a07646395ef7b29/grupo1?orgId=1&from=now-1h&to=now&timezone=utc&var-datasource=default&var-cluster=&var-namespace=master-cruz&var-pod=api-azure-746b55858-cttzr&refresh=10s
 ```
