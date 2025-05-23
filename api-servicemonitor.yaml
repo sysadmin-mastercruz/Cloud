@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: api-azure-monitor
+  namespace: master-cruz  # ✅ CORRETO
+  labels:
+    release: prometheus-stack  # ⚠️ Confirma este valor com `kubectl get prometheus -n master-cruz --show-labels`
+spec:
+  selector:
+    matchLabels:
+      app: api-azure
+  namespaceSelector:
+    matchNames:
+      - grupo1  # 👈 onde está o Service da tua API
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s

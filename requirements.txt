@@ -5,4 +5,5 @@ pre-commit
 flake8
 flask-cors
 pytest
+prometheus_client
 

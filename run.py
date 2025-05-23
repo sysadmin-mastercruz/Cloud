@@ -1,6 +1,6 @@
 from app import create_app
 from flask_cors import CORS
-from flask import Response
+from flask import request, Response
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST, Counter, Summary
 import time
 
@@ -9,8 +9,17 @@ app = create_app()
 CORS(app)
 
 # Métricas Prometheus
-REQUEST_COUNT = Counter('api_requests_total', 'Número total de pedidos à API')
-REQUEST_LATENCY = Summary('api_request_latency_seconds', 'Latência dos pedidos à API')
+REQUEST_COUNT = Counter(
+    'http_requests_total', 
+    'Contagem total de pedidos HTTP',
+    ['method', 'endpoint', 'http_status']
+)
+
+REQUEST_LATENCY = Summary(
+    'http_request_duration_seconds', 
+    'Latência dos pedidos HTTP',
+    ['method', 'endpoint']
+)
 
 @app.route("/metrics")
 def metrics():
@@ -18,13 +27,19 @@ def metrics():
 
 @app.before_request
 def before_request():
-    REQUEST_COUNT.inc()
-    app.start_time = time.time()
+    request.start_time = time.time()
 
 @app.after_request
 def after_request(response):
-    duration = time.time() - app.start_time
-    REQUEST_LATENCY.observe(duration)
+    request_latency = time.time() - request.start_time
+
+    endpoint = request.path
+    method = request.method
+    status = response.status_code
+
+    REQUEST_COUNT.labels(method=method, endpoint=endpoint, http_status=status).inc()
+    REQUEST_LATENCY.labels(method=method, endpoint=endpoint).observe(request_latency)
+
     return response
 
 # Função para listar todas as rotas disponíveis

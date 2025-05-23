@@ -17,4 +17,8 @@ data:
 
       - job_name: 'api-azure'
         static_configs:
-          - targets: ['api-azure:5000']
+          - targets: ['api-azure:80']
+
+      - job_name: 'kube-state-metrics'
+        static_configs:
+          - targets: ['kube-state-metrics.kube-system.svc.cluster.local:8080']

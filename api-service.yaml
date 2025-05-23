@@ -3,11 +3,14 @@ kind: Service
 metadata:
   name: api-azure
   namespace: grupo1
+  labels:
+    app: api-azure
 spec:
   selector:
     app: api-azure
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 5000
-  type: LoadBalancer
+    - name: http
+      protocol: TCP
+      port: 80           # <-- o Prometheus acede a esta
+      targetPort: 5000   # <-- o Flask responde aqui
+  type: ClusterIP  # ou LoadBalancer, se quiseres expor externamente
