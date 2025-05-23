@@ -63,7 +63,7 @@ projeto7/
 # 📊 Monitorização da API `api-azure` com Prometheus e Grafana
 
 ## 🎯 Objetivo
-Implementar a monitorização de uma API Flask (`api-azure`) usando Prometheus e Grafana, com métricas personalizadas expostas no endpoint `/metrics`. O ambiente Kubernetes está dividido em dois namespaces: `grupo1` (onde corre a aplicação) e `master-cruz` (onde está instalada a stack de monitorização com Prometheus Operator).
+Implementar a monitorização de uma API Flask (`api-azure`) usando Prometheus e Grafana, com métricas personalizadas expostas no endpoint `/metrics`. O ambiente Kubernetes está no namespace onde corre a aplicação e  está instalada a stack de monitorização com Prometheus Operator
 
 ---
 
