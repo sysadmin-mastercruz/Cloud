@@ -131,10 +131,9 @@ docker push acrgrupo1.azurecr.io/api-azure:v3
 
 ---
 
-### 4. Atualização do deployment da aplicação em Kubernetes
+### 4. Atualização do deployment da aplicação no Kubernetes
 
 ```bash
-kubectl set image deployment/api-azure api-azure=acrgrupo1.azurecr.io/api-azure:v3 -n grupo1
 kubectl set image deployment/api-azure api-azure=acrgrupo1.azurecr.io/api-azure:v3 -n master-cruz
 ```
 
