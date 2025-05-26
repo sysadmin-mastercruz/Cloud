@@ -187,7 +187,11 @@ spec:
       interval: 15s
 ```
 
-Este `ServiceMonitor` diz ao Prometheus para procurar o serviço `api-azure` no namespace `master-cruz`, na porta `http`, no path `/metrics`.
+Utilizámos o recurso `ServiceMonitor` do Prometheus para permitir encontrar o serviço `api-azure` no namespace `master-cruz`, na porta `http`, no path `/metrics`.
+
+O Prometheus procura o serviço api-azure com a label app:api-azure e escuta na porta http no path /metrics a cada 15 segundos.
+
+Isto permite que o Prometheus recolha as métricas expostas pela aplicação automáticamente.
 
 ---
 
