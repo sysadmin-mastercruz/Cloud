@@ -180,14 +180,14 @@ spec:
       app: api-azure
   namespaceSelector:
     matchNames:
-      - grupo1
+      - master-cruz
   endpoints:
     - port: http
       path: /metrics
       interval: 15s
 ```
 
-Este `ServiceMonitor` diz ao Prometheus para procurar o serviço `api-azure` no namespace `grupo1`, na porta `http`, no path `/metrics`.
+Este `ServiceMonitor` diz ao Prometheus para procurar o serviço `api-azure` no namespace `master-cruz`, na porta `http`, no path `/metrics`.
 
 ---
 
