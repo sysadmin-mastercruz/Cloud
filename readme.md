@@ -278,7 +278,7 @@ trivy config Dockerfile
 #### (Opcional) 6. Verificar segurança no Kubernetes (se aplicável)
 
 ```bash
-trivy k8s --report summary cluster
+trivy k8s sysadmin-cluster --report summary --include-namespaces master-cruz -f json -o relatorio.json
 ```
 
 ### 🛠 Exemplo de integração no GitHub Actions
