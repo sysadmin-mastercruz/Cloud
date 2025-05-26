@@ -180,14 +180,14 @@ spec:
       app: api-azure
   namespaceSelector:
     matchNames:
-      - grupo1
+      - master-cruz
   endpoints:
     - port: http
       path: /metrics
       interval: 15s
 ```
 
-Este `ServiceMonitor` diz ao Prometheus para procurar o serviço `api-azure` no namespace `grupo1`, na porta `http`, no path `/metrics`.
+Este `ServiceMonitor` diz ao Prometheus para procurar o serviço `api-azure` no namespace `master-cruz`, na porta `http`, no path `/metrics`.
 
 ---
 
@@ -204,8 +204,8 @@ Após aplicação de todas as configurações:
 ## ✅ Resultado final
 
 - A API está a exportar métricas completas de tráfego e performance
-- A interface do Prometheus fica acessível no browser através do link e monitoriza o estado dos containers
-- A interface do Grafana fica acessível no browser através do link e permite visualizar os gráficos das métricas pretendidas relativmaente à API
+- A interface do Prometheus fica acessível no browser e permite vizualizar o estado dos containers
+- A interface do Grafana fica acessível no browser e permite visualizar os gráficos das métricas pretendidas
 - Concluindo: a stack de observabilidade Prometheus + Grafana monitoriza a API em tempo real
 
 🟢 Endereço do Prometheus
