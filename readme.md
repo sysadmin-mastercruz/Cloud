@@ -204,8 +204,8 @@ Após aplicação de todas as configurações:
 ## ✅ Resultado final
 
 - A API está a exportar métricas completas de tráfego e performance
-- A interface do Prometheus fica acessível no browser através do link e monitoriza o estado dos containers
-- A interface do Grafana fica acessível no browser através do link e permite visualizar os gráficos das métricas pretendidas relativmaente à API
+- A interface do Prometheus fica acessível no browser e permite vizualizar o estado dos containers
+- A interface do Grafana fica acessível no browser e permite visualizar os gráficos das métricas pretendidas
 - Concluindo: a stack de observabilidade Prometheus + Grafana monitoriza a API em tempo real
 
 🟢 Endereço do Prometheus
